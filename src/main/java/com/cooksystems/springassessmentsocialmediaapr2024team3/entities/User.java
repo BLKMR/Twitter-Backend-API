@@ -2,10 +2,7 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.entities;
 
 import java.security.Timestamp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,10 +24,11 @@ public class User {
     private boolean deleted;
 
     private String firstName;
-
     private String lastName;
 
     private String email;
-
     private String phone;
+
+    @Embedded
+    private Profile profile;
 }
