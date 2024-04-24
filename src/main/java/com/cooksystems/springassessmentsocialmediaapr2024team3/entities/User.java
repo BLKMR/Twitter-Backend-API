@@ -1,10 +1,8 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.entities;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,21 +13,31 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
+    @Column(name = "username", insertable = false, updatable = false)
     private String username;
 
+    @Column(name = "password", insertable = false, updatable = false)
     private String password;
 
-    private Timestamp joined; 
+    @Embedded private Credentials credentials;
 
+    private Timestamp joined; 
     private boolean deleted;
 
+    @Column(name = "firstName", insertable = false, updatable = false)
     private String firstName;
 
+    @Column(name = "lastName", insertable = false, updatable = false)
     private String lastName;
 
+    @Column(name = "email", insertable = false, updatable = false)
     private String email;
 
+    @Column(name = "phone", insertable = false, updatable = false)
     private String phone;
+
+    @Embedded
+    private Profile profile;
 }
