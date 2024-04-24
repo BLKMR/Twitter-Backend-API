@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 
-
 @Repository
 public interface HashTagRepository extends JpaRepository<User, Long> {
 
