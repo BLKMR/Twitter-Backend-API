@@ -4,23 +4,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handleBadRequestException(BadRequestException ex){
-        System.err.println("Bad Request Exception: " + ex.getMessage());
+    public ResponseEntity<Object> handleBadRequestException(Exception ex){
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request Exception");
-    }
+        if (ex instanceof BadRequestException) {
+            BadRequestException badRequestException = new BadRequestException(
+                    ex.getMessage()
+            );
 
+            return new ResponseEntity<>(badRequestException, badRequest);
+        }
+
+        return null;
+
+        }
+
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
         // Log the exception
         System.err.println("Not Found Exception: " + ex.getMessage());
 
-        // Customize the error message or response
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found Exception occurred");
     }
 

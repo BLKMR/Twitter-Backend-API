@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class HashTag {
 
-	
-	
 	 @Id
 	 @GeneratedValue
 	private  Long id;
