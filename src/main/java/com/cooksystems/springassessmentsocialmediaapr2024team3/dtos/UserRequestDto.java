@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserRequestDto {
     private CredentialsDto credentials;
+    private ProfileDto profile;
 
     long currentTime = System.currentTimeMillis();
     private Timestamp joined = new Timestamp(currentTime);

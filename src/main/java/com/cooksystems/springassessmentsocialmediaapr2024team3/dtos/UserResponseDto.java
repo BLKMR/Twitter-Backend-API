@@ -9,12 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserResponseDto {
     private Integer id;
-    private String username;
-    private String password;
+    private CredentialsDto credentials;
+    private ProfileDto profile;
     private Timestamp joined; 
     private boolean deleted;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
 }
