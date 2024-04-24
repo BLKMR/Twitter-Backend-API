@@ -13,16 +13,22 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
+    /*
+    @Column(name = "username", insertable = false, updatable = false)
     private String username;
 
+    @Column(name = "password", insertable = false, updatable = false)
     private String password;
+    */
+
+    @Embedded private Credentials credentials;
 
     private Timestamp joined; 
-
     private boolean deleted;
 
+    /*
     @Column(name = "firstName", insertable = false, updatable = false)
     private String firstName;
 
@@ -34,6 +40,7 @@ public class User {
 
     @Column(name = "phone", insertable = false, updatable = false)
     private String phone;
+    */
 
     @Embedded
     private Profile profile;
