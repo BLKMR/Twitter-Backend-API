@@ -10,10 +10,4 @@ import lombok.NoArgsConstructor;
 public class UserRequestDto {
     private CredentialsDto credentials;
     private ProfileDto profile;
-
-    long currentTime = System.currentTimeMillis();
-    private Timestamp joined = new Timestamp(currentTime);
-
-    private boolean deleted;
-    
 }
