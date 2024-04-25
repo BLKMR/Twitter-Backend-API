@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/validate")
+@RequestMapping("/tags")
 @RequiredArgsConstructor
-public class ValidateController {
-
-    //Handles ValidateService
+public class HashtagController {
 
 }

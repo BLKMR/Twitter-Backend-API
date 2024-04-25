@@ -1,9 +1,18 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions;
 
-public class NotFoundException extends RuntimeException{
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public NotFoundException(String errorMessage) {
-        super(errorMessage);
-    }
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class NotFoundException extends RuntimeException {
+
+	private static final long serialVersionUID = 6870131658491867519L;
+	private String message;
+
 
 }

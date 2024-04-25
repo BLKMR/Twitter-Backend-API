@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserResponseDto> getAllUsers();
+    List<UserResponseDto> getAllActiveUsers();
 
+    UserResponseDto getActiveUserByUsername(String username);
 
-    UserResponseDto getSingleUserById(Long id);
 }

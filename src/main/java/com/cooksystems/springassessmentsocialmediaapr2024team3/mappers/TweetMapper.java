@@ -1,9 +1,18 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.mappers;
 
-
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TweetMapper {
+
+    TweetResponseDto entityToDto(Tweet entity);
+
+    List<TweetResponseDto> entitiesToDtos(List<Tweet> entities);
 
 }

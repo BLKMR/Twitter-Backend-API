@@ -8,11 +8,13 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class })
+
 public interface UserMapper {
 
     UserResponseDto entityToDto(User entity);
 
     List<UserResponseDto> entitiesToDtos(List<User> entities);
+
 
 }
