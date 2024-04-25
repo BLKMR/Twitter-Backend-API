@@ -23,9 +23,16 @@ public class UserController {
         return userService.getAllActiveUsers();
     }
 
-
-    @GetMapping("/username/@{username}")
+    @GetMapping("/@{username}")
     public UserResponseDto getActiveUserByUsername(@PathVariable String username) {
         return userService.getActiveUserByUsername(username);
     }
+
+
+    @GetMapping("/@{username}/followers")
+    public List<UserResponseDto> getUserFollowers(@PathVariable String username) {
+        return userService.getUserFollowers(username);
+    }
+
+
 }

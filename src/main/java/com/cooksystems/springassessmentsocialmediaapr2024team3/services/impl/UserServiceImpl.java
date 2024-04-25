@@ -1,5 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,9 +38,25 @@ public class UserServiceImpl implements UserService{
         if (activeUser == null){
             throw new NotFoundException("Account is not active or does not exist!");
         }
-        
+
         return userMapper.entityToDto(activeUser);
     }
+
+    @Override
+    public List<UserResponseDto> getUserFollowers(String username) {
+        User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if(activeUser == null) {
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+
+        List<User> followers = activeUser.getFollowers();
+        followers.removeIf(User::isDeleted);
+
+        return userMapper.entitiesToDtos(followers);
+
+    }
+
+
 
 
 }

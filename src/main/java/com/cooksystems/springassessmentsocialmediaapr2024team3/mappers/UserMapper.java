@@ -2,9 +2,11 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.mappers;
 
 
 
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 public interface UserMapper {
 
+    @Mapping(source = "credentials.username", target = "username")
     UserResponseDto entityToDto(User entity);
 
     List<UserResponseDto> entitiesToDtos(List<User> entities);
