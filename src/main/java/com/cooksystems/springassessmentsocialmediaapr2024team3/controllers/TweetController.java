@@ -1,8 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +19,11 @@ public class TweetController {
     public SimpleTweetResponseDto createTweet(@RequestBody TweetRequestDto newTweet) {
         return tweetService.createTweet(newTweet);
     }
+
+    @PostMapping("/{id}/repost")
+    public TweetRepostDto createRepost(@PathVariable Long id, @RequestBody CredentialsDto credentials){
+        return tweetService.createRepost(id, credentials);
+            }
 
 
 }

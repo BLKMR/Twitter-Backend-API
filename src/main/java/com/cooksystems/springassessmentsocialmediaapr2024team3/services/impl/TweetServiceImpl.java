@@ -1,10 +1,10 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Hashtag;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.TweetMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.UserMapper;
@@ -50,6 +50,10 @@ public class TweetServiceImpl implements TweetService {
 
         Tweet tweetCreated = tweetRepository.saveAndFlush(tweetToCreate);
 
+
+        //WHAT DO WE DO ABOUT @MENTIONSSSSSSSSSSSSSSSSS
+
+
         List<String> hashtagsToSave = extractHashtags(newTweet.getContent());
         for (String hashtag: hashtagsToSave){
             Hashtag hashtagToSave = new Hashtag();
@@ -69,8 +73,42 @@ public class TweetServiceImpl implements TweetService {
 
         return tweetMapper.simpleEntityToDto(tweetCreated);
 
+    }
+
+
+    @Override
+    public TweetRepostDto createRepost(Long id, CredentialsDto credentials) {
+        User author = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
+        if(author == null) {
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+        String checkCredUsername = credentials.getUsername();
+        String checkCredPassword = credentials.getPassword();
+
+        if(!author.getCredentials().getUsername().equals(checkCredUsername) || !author.getCredentials().getPassword().equals(checkCredPassword)){
+            throw new NotAuthorizedException("Username and/or Password incorrect");
+        }
+
+        Tweet originalTweet = tweetRepository.findByIdAndDeletedFalse(id);
+
+        if(originalTweet == null || originalTweet.isDeleted()){
+            throw new NotFoundException("Tweet not found/or deleted");
+        }
+
+        Tweet repostTweet = new Tweet();
+        repostTweet.setAuthor(author);
+        repostTweet.setDeleted(false);
+        repostTweet.setRepostOf(originalTweet); // Set the repostOf field to the original Tweet
+        Tweet savedRepostTweet = tweetRepository.save(repostTweet);
+
+
+        return tweetMapper.repostEntityToDto(savedRepostTweet);
 
     }
+
+
+
+
 
 
 
