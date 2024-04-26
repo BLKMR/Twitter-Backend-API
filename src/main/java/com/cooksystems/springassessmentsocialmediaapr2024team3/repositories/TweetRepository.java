@@ -9,4 +9,6 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, Long>  {
 
+    Tweet getById(Integer id);
+
 }

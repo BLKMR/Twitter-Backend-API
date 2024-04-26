@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByDeletedFalse();
 
-
     User findByCredentialsUsernameAndDeletedFalse(String username);
 
+    User getById(Integer id);
 }
