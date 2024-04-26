@@ -43,11 +43,14 @@ public class Tweet {
 
 	@ManyToMany
 	@JoinTable(name = "user_mentions",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "tweet_id"))
+			joinColumns = @JoinColumn(name = "tweet_id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private List<User> mentions = new ArrayList<>();
 
 	@ManyToMany
+	@JoinTable(name = "tweet_hashtags",
+			joinColumns = @JoinColumn(name = "tweet_id"),
+			inverseJoinColumns = @JoinColumn(name = "hashtags_id"))
 	private List<Hashtag> hashtags = new ArrayList<>();
 
 	@ManyToMany

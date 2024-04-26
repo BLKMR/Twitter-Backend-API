@@ -126,7 +126,7 @@ public class TweetServiceImpl implements TweetService {
 
     public List<String> extractMentions(String text) {
         List<String> mentions = new ArrayList<>();
-        Pattern pattern = Pattern.compile("@[a-zA-Z0-9]+\\S*");
+        Pattern pattern = Pattern.compile("(?<=@)[a-zA-Z0-9]+\\S*");
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             mentions.add(matcher.group());
