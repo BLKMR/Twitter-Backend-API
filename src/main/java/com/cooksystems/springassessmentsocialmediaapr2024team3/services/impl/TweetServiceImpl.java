@@ -51,8 +51,12 @@ public class TweetServiceImpl implements TweetService {
         Tweet tweetCreated = tweetRepository.saveAndFlush(tweetToCreate);
 
 
-        //WHAT DO WE DO ABOUT @MENTIONSSSSSSSSSSSSSSSSS
-
+        List<String> mentionsToSave = extractMentions(newTweet.getContent());
+        for (String mention : mentionsToSave){
+            System.out.println(mention);
+            User mentioned = userRepository.findByCredentialsUsername(mention);
+            tweetCreated.getMentions().add(mentioned);
+        }
 
         List<String> hashtagsToSave = extractHashtags(newTweet.getContent());
         for (String hashtag: hashtagsToSave){
@@ -71,7 +75,9 @@ public class TweetServiceImpl implements TweetService {
             }
         }
 
-        return tweetMapper.simpleEntityToDto(tweetCreated);
+        Tweet tweetSaved = tweetRepository.saveAndFlush(tweetCreated);
+
+        return tweetMapper.simpleEntityToDto(tweetSaved);
 
     }
 
@@ -108,19 +114,24 @@ public class TweetServiceImpl implements TweetService {
 
 
 
-
-
-
-
-
     public List<String> extractHashtags(String text) {
         List<String> hashtags = new ArrayList<>();
-        Pattern pattern = Pattern.compile("#\\w+");
+        Pattern pattern = Pattern.compile("#[a-zA-Z0-9]+\\b");
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
-            hashtags.add(matcher.group()); // Add the entire matched substring (including the "#")
+            hashtags.add(matcher.group());
         }
         return hashtags;
+    }
+
+    public List<String> extractMentions(String text) {
+        List<String> mentions = new ArrayList<>();
+        Pattern pattern = Pattern.compile("@[a-zA-Z0-9]+\\S*");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            mentions.add(matcher.group());
+        }
+        return mentions;
     }
 
 

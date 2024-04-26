@@ -23,16 +23,16 @@ public class Hashtag {
 	@Id
 	@GeneratedValue
 	private Long id;
-	 
+
 	@Column(nullable = false, unique = true)
 	private String label;
-	
+
 	@CreatedDate
 	private Timestamp firstUsed;
-	
+
 	@LastModifiedDate
 	private Timestamp lastUsed;
 
 	@ManyToMany(mappedBy = "hashtags")
-  private List<Tweet> tweets = new ArrayList<>();
+	private List<Tweet> tweets = new ArrayList<>();
 }

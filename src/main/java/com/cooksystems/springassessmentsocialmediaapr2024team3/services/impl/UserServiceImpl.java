@@ -70,15 +70,19 @@ public class UserServiceImpl implements UserService{
             throw new NotAuthorizedException("Username and/or Password incorrect");
         }
 
+        User updatedUser = new User();
+        if (updateRequest.getProfile() == null){
+            updatedUser.getProfile().setEmail(checkUser.getProfile().getEmail());
+            updatedUser.getProfile().setPhone(checkUser.getProfile().getPhone());
+            updatedUser.getProfile().setFirstName(checkUser.getProfile().getFirstName());
+            updatedUser.getProfile().setLastName(checkUser.getProfile().getFirstName());
+            updatedUser.setProfile(userMapper.dtoToEntity(updateRequest.getProfile()));
+        }
 
-        //CHECK FIELDS IF THEY MATCH AND IF THEY DON'T UPDATE THEM?!?!
-        //WHAT IF FIELDS ARE EMPTY?
-        //HELP?!
-        checkUser.setProfile(userMapper.dtoToEntity(updateRequest.getProfile()));
 
-        User updatedUser = userRepository.saveAndFlush(checkUser);
+        User saveUpdatedUser = userRepository.saveAndFlush(checkUser);
 
-        return userMapper.entityToDto(updatedUser);
+        return userMapper.entityToDto(saveUpdatedUser);
 
     }
 

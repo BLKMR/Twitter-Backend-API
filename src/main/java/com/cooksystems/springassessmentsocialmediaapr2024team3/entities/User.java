@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Table(name = "user_table")
+
 @Entity
 @NoArgsConstructor
 @Data
@@ -22,19 +23,22 @@ public class User {
 
     @Embedded
     private Credentials credentials;
-    
+
     @Embedded
     private Profile profile;
 
     @CreationTimestamp
-    private Timestamp joined; 
-    
+    private Timestamp joined;
+
     private boolean deleted;
-    
+
     @OneToMany(mappedBy = "author")
     private List<Tweet> tweets;
-    
+
     @ManyToMany
+    @JoinTable(name = "followers_following",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id"))
     private List<User> followers = new ArrayList<>();
 
     @ManyToMany(mappedBy = "followers")
