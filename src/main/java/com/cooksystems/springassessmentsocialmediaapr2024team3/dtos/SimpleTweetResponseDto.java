@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class TweetResponseDto {
+public class SimpleTweetResponseDto {
 
     private Long id;
 
@@ -16,9 +16,5 @@ public class TweetResponseDto {
     private Timestamp posted;
 
     private String content;
-
-    private TweetResponseDto inReplyTo;
-
-    private TweetResponseDto repostOf;
 
 }

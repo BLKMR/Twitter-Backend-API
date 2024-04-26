@@ -1,9 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.CredentialsDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileUpdateRequestDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
@@ -79,9 +76,7 @@ public class UserServiceImpl implements UserService{
 
         return userMapper.entityToDto(updatedUser);
 
-
     }
-
 
 
 

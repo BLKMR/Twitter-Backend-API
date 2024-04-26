@@ -2,6 +2,7 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.CredentialsDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileUpdateRequestDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Profile;
@@ -34,6 +35,7 @@ public class UserController {
     public List<UserResponseDto> getUserFollowers(@PathVariable String username) {
         return userService.getUserFollowers(username);
     }
+
 
     @PatchMapping("/@{username}")
     public UserResponseDto updateProfile(@PathVariable String username, @RequestBody ProfileUpdateRequestDto updateRequest){
