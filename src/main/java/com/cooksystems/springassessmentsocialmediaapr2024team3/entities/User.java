@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "user-table")
+@Table(name = "user_table")
 @Entity
 @NoArgsConstructor
 @Data
