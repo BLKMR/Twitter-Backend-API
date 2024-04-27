@@ -1,10 +1,14 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.BadRequestException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.TweetMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.UserMapper;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,8 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final TweetRepository tweetRepository;
+    private final TweetMapper tweetMapper;
 
     @Override
     public List<UserResponseDto> getAllActiveUsers() {
@@ -58,6 +65,18 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
+    public List<TweetResponseDto> getUserTweets(String username) {
+        User checkUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if(checkUser == null) {
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+        List<Tweet> userTweets = tweetRepository.findAllByAuthorAndDeletedFalseOrderByPostedDesc(checkUser);
+
+        return tweetMapper.entitiesToDtos(userTweets);
+    }
+
+
+    @Override
     public UserResponseDto updateProfile(String username, ProfileUpdateRequestDto updateRequest){
         User checkUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
         if(checkUser == null) {
@@ -83,6 +102,35 @@ public class UserServiceImpl implements UserService{
         User saveUpdatedUser = userRepository.saveAndFlush(checkUser);
 
         return userMapper.entityToDto(saveUpdatedUser);
+
+    }
+
+    @Override
+    public void subscribeUser(String username, CredentialsDto credentials){
+        User userToSubscribeTo = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if(userToSubscribeTo == null) {
+            throw new NotFoundException("The user you are trying to subscribe to does not exist.");
+        }
+        User checkUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
+        if(checkUser == null) {
+            throw new NotFoundException("User account does not exist.");
+        }
+        String checkCredUsername = credentials.getUsername();
+        String checkCredPassword = credentials.getPassword();
+
+        if(!checkUser.getCredentials().getUsername().equals(checkCredUsername) || !checkUser.getCredentials().getPassword().equals(checkCredPassword)){
+            throw new NotAuthorizedException("Username and/or Password incorrect");
+        }
+
+        if (checkUser.getFollowers().contains(userToSubscribeTo)) {
+            throw new BadRequestException("User already subscribed.");
+        }
+
+        checkUser.getFollowers().add(userToSubscribeTo);
+        userRepository.save(checkUser);
+
+        // No need to explicitly flush unless immediate persistence is required
+
 
     }
 

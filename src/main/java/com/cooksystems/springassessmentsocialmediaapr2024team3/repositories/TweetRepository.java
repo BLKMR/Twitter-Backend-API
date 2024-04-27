@@ -6,9 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 
+import java.util.List;
+
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, Long>  {
 
     Tweet findByIdAndDeletedFalse(Long id);
+
+    List<Tweet> findAllByAuthorAndDeletedFalseOrderByPostedDesc(User user);
 
 }
