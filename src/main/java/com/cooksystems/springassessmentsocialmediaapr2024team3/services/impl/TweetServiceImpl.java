@@ -53,9 +53,9 @@ public class TweetServiceImpl implements TweetService {
 
         List<String> mentionsToSave = extractMentions(newTweet.getContent());
         for (String mention : mentionsToSave){
-            System.out.println(mention);
             User mentioned = userRepository.findByCredentialsUsername(mention);
             tweetCreated.getMentions().add(mentioned);
+            mentioned.getTweetsMentioned().add(tweetCreated);
         }
 
         List<String> hashtagsToSave = extractHashtags(newTweet.getContent());

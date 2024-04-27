@@ -75,6 +75,18 @@ public class UserServiceImpl implements UserService{
         return tweetMapper.entitiesToDtos(userTweets);
     }
 
+    @Override
+    public List<TweetResponseDto> getUserMentionedTweets(String username) {
+        User checkUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if(checkUser == null) {
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+        List<Tweet> mentionedTweets = checkUser.getTweetsMentioned();
+        mentionedTweets.removeIf(Tweet::isDeleted);
+
+        return tweetMapper.entitiesToDtos(mentionedTweets);
+    }
+
 
     @Override
     public UserResponseDto updateProfile(String username, ProfileUpdateRequestDto updateRequest){
@@ -128,8 +140,6 @@ public class UserServiceImpl implements UserService{
 
         checkUser.getFollowers().add(userToSubscribeTo);
         userRepository.save(checkUser);
-
-        // No need to explicitly flush unless immediate persistence is required
 
 
     }
