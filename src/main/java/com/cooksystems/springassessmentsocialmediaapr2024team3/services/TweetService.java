@@ -4,6 +4,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetR
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface TweetService {
 
     TweetResponseDto deleteTweetById(Integer id);
 
-    TweetResponseDto replyToTweet(Credential credentials, String content, Integer id);
+    TweetResponseDto replyToTweet(TweetRequestDto tweet, Integer id);
 
     TweetResponseDto likeTweet(Credential credentials, Integer id);
 

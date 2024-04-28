@@ -2,6 +2,7 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Hashtag;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
@@ -120,25 +121,33 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public TweetResponseDto replyToTweet(Credential credentials, String content, Integer id) {
-        User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
+    public TweetResponseDto replyToTweet(TweetRequestDto tweet, Integer id) {
+        User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(tweet.getCredentials().getUsername());
         if (activeUser == null){
             throw new NotFoundException("Account is not active or does not exist!");
         }
 
-        if (!credentials.getUsername().equals(activeUser.getCredentials().getUsername()) || !credentials.getPassword().equals(activeUser.getCredentials().getPassword())) {
+        if (!tweet.getCredentials().getUsername().equals(activeUser.getCredentials().getUsername()) || !tweet.getCredentials().getPassword().equals(activeUser.getCredentials().getPassword())) {
             throw new NotAuthorizedException("Invalid username or password");
+        }
+
+        if (tweet.getContent() == null) {
+            throw new NotFoundException("Nothing to tweet");
         }
 
         Tweet tweetToBeRepliedTo = tweetRepository.getById(id);
         Tweet replyTweet = new Tweet();
 
         replyTweet.setAuthor(activeUser);
-        replyTweet.setContent(content);
+        replyTweet.setContent(tweet.getContent());
         replyTweet.setDeleted(false);
+        replyTweet.setPosted(new Timestamp(System.currentTimeMillis()));
+        replyTweet.setInReplyTo(tweetToBeRepliedTo);
         tweetRepository.saveAndFlush(replyTweet);
 
-        tweetToBeRepliedTo.getReplies().add(replyTweet);
+        List<Tweet> replies = tweetToBeRepliedTo.getReplies();
+        replies.add(tweetMapper.dtoToEntity(tweet));
+        tweetToBeRepliedTo.setReplies(replies);
         tweetRepository.saveAndFlush(tweetToBeRepliedTo);
 
         return tweetMapper.entityToDto(tweetToBeRepliedTo);

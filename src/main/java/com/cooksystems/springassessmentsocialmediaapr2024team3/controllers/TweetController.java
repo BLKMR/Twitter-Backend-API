@@ -15,6 +15,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetR
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,8 @@ public class TweetController {
     }
 
     @PostMapping("/{id}/reply")
-    public TweetResponseDto replyToTweet(@RequestBody String content, @RequestBody Credential credentials, @PathVariable Integer id) {
-        return tweetService.replyToTweet(credentials, content, id);
+    public TweetResponseDto replyToTweet(@RequestBody TweetRequestDto tweet, @PathVariable Integer id) {
+        return tweetService.replyToTweet(tweet, id);
     }
 
     @PostMapping("/{id}/like")

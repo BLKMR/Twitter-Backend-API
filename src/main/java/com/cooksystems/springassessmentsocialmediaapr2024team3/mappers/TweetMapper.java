@@ -1,6 +1,7 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.mappers;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import org.mapstruct.Mapper;
@@ -19,4 +20,8 @@ public interface TweetMapper {
 
     @Mapping(target = "author", source = "author.credentials.username")
     SimpleTweetResponseDto simpleEntityToDto(Tweet tweetCreated);
+
+    Object entityToDto(TweetRequestDto tweet);
+
+    Tweet dtoToEntity(TweetRequestDto tweet);
 }
