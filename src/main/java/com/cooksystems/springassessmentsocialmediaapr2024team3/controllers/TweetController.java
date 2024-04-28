@@ -1,6 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
-<<<<<<< HEAD
+
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-=======
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import org.springframework.web.bind.annotation.*;
->>>>>>> develop
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
@@ -30,8 +29,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TweetController {
 
-<<<<<<< HEAD
+
     private final TweetService tweetService;
+
+    @PostMapping
+    public SimpleTweetResponseDto createTweet(@RequestBody TweetRequestDto newTweet) {
+        return tweetService.createTweet(newTweet);
+    }
 
     @GetMapping("/{id}")
     public TweetResponseDto getTweetById(@PathVariable Integer id) {
@@ -44,18 +48,22 @@ public class TweetController {
     }
 
     @PostMapping("/{id}/reply")
-    public TweetResponseDto replyToTweet(@RequestBody Credential credentials, @PathVariable Integer id) {
-        return tweetService.replyToTweet(credentials, id);
-    }
-=======
-
-    private final TweetService tweetService;
-
-    @PostMapping
-    public SimpleTweetResponseDto createTweet(@RequestBody TweetRequestDto newTweet) {
-        return tweetService.createTweet(newTweet);
+    public TweetResponseDto replyToTweet(@RequestBody String content, @RequestBody Credential credentials, @PathVariable Integer id) {
+        return tweetService.replyToTweet(credentials, content, id);
     }
 
->>>>>>> develop
+    @PostMapping("/{id}/like")
+    public TweetResponseDto likeTweet(@RequestBody Credential credentials, @PathVariable Integer id) {
+        return tweetService.likeTweet(credentials, id);
+    }
 
+    @GetMapping("/{id}/replies")
+    public List<TweetResponseDto> getReplies(@PathVariable Integer id) {
+        return tweetService.getReplies(id);
+    }
+
+    @GetMapping("/{id}/likes") 
+    public List<UserResponseDto> getLikes(@PathVariable Integer id) {
+        return tweetService.getLikes(id);
+    }
 }

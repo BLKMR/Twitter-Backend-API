@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.controllers.TweetController;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
@@ -84,7 +85,6 @@ public class TweetServiceImpl implements TweetService {
 
     }
 
-
     public List<String> extractHashtags(String text) {
         List<String> hashtags = new ArrayList<>();
         Pattern pattern = Pattern.compile("#\\w+");
@@ -94,13 +94,6 @@ public class TweetServiceImpl implements TweetService {
         }
         return hashtags;
     }
-
-
-
-
-    private final TweetRepository tweetRepository;
-    private final TweetMapper tweetMapper;
-    private final UserRepository userRepository;
     
     @Override
     public TweetResponseDto getTweetById(Integer id) {
@@ -120,13 +113,39 @@ public class TweetServiceImpl implements TweetService {
             throw new NotFoundException("Tweet either does not exist, or has been deleted");
         }
 
-        tweetRepository.delete(tweet);
+        tweet.setDeleted(true);
+        tweetRepository.saveAndFlush(tweet);
 
         return tweetMapper.entityToDto(tweet);
     }
 
     @Override
-    public TweetResponseDto replyToTweet(Credential credentials, Integer id) {
+    public TweetResponseDto replyToTweet(Credential credentials, String content, Integer id) {
+        User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
+        if (activeUser == null){
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+
+        if (!credentials.getUsername().equals(activeUser.getCredentials().getUsername()) || !credentials.getPassword().equals(activeUser.getCredentials().getPassword())) {
+            throw new NotAuthorizedException("Invalid username or password");
+        }
+
+        Tweet tweetToBeRepliedTo = tweetRepository.getById(id);
+        Tweet replyTweet = new Tweet();
+
+        replyTweet.setAuthor(activeUser);
+        replyTweet.setContent(content);
+        replyTweet.setDeleted(false);
+        tweetRepository.saveAndFlush(replyTweet);
+
+        tweetToBeRepliedTo.getReplies().add(replyTweet);
+        tweetRepository.saveAndFlush(tweetToBeRepliedTo);
+
+        return tweetMapper.entityToDto(tweetToBeRepliedTo);
+    }
+
+    @Override
+    public TweetResponseDto likeTweet(Credential credentials, Integer id) {
         User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
         if (activeUser == null){
             throw new NotFoundException("Account is not active or does not exist!");
@@ -137,5 +156,57 @@ public class TweetServiceImpl implements TweetService {
         }
 
         Tweet tweet = tweetRepository.getById(id);
+
+        if (tweet == null || tweet.isDeleted()) {
+            throw new NotFoundException("Tweet either does not exist, or has been deleted");
+        }
+
+        activeUser.getLikedTweets().add(tweet);
+        userRepository.saveAndFlush(activeUser);
+
+        tweet.getLikes().add(activeUser);
+        tweetRepository.saveAndFlush(tweet);
+        
+        return tweetMapper.entityToDto(tweet);
+    }
+
+    @Override
+    public List<TweetResponseDto> getReplies(Integer id) {
+        Tweet tweet = tweetRepository.getById(id);
+
+        if (tweet == null || tweet.isDeleted()) {
+            throw new NotFoundException("Tweet either does not exist, or has been deleted");
+        }
+
+        List<Tweet> replies = tweet.getReplies();
+        List<Tweet> returnReplies = new ArrayList<>();
+
+        for (Tweet reply : replies) {
+            if (!reply.isDeleted()){
+                returnReplies.add(reply);
+            }
+        }
+
+        return tweetMapper.entitiesToDtos(returnReplies);
+    }
+
+    @Override
+    public List<UserResponseDto> getLikes(Integer id) {
+        Tweet tweet = tweetRepository.getById(id);
+
+        if (tweet == null || tweet.isDeleted()) {
+            throw new NotFoundException("Tweet either does not exist, or has been deleted");
+        }
+
+        List<User> likes = tweet.getLikes();
+        List<User> returnLikes = new ArrayList<>();
+
+        for (User user : likes) {
+            if (!user.isDeleted()){
+                returnLikes.add(user);
+            }
+        }
+
+        return userMapper.entitiesToDtos(returnLikes);
     }
 }

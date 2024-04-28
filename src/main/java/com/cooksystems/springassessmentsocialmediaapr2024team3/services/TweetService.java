@@ -3,6 +3,9 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.services;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+
+import java.util.List;
 
 import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
 
@@ -18,6 +21,12 @@ public interface TweetService {
 
     TweetResponseDto deleteTweetById(Integer id);
 
-    TweetResponseDto replyToTweet(Credential credentials, Integer id);
+    TweetResponseDto replyToTweet(Credential credentials, String content, Integer id);
+
+    TweetResponseDto likeTweet(Credential credentials, Integer id);
+
+    List<TweetResponseDto> getReplies(Integer id);
+
+    List<UserResponseDto> getLikes(Integer id);
 
 }
