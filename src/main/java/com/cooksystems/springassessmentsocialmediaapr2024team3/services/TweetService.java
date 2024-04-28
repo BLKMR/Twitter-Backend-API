@@ -24,7 +24,7 @@ public interface TweetService {
 
     TweetResponseDto replyToTweet(TweetRequestDto tweet, Integer id);
 
-    TweetResponseDto likeTweet(Credential credentials, Integer id);
+    void likeTweet(Credential credentials, Integer id);
 
     List<TweetResponseDto> getReplies(Integer id);
 

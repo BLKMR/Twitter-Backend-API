@@ -22,6 +22,6 @@ public interface UserService {
 
     UserResponseDto deleteUser(Credentials credentials, String username);
 
-    UserResponseDto unfollowUser(Credentials credentials, String username);
+    void unfollowUser(Credentials credentials, String username);
 
 }

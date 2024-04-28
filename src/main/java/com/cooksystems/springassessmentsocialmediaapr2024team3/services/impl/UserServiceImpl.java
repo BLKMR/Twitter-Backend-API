@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserResponseDto unfollowUser(Credentials credentials, String username) {
+    public void unfollowUser(Credentials credentials, String username) {
         User userToUnfollow = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
         if(userToUnfollow == null) {
             throw new NotFoundException("Account to unfollow is not active or does not exist!");
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService{
                 follow.getFollowers().remove(user);
                 userRepository.saveAndFlush(follow);
                 
-                return userMapper.entityToDto(user);
+                return;
 
             }
         }

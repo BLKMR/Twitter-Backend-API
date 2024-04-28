@@ -171,7 +171,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public TweetResponseDto likeTweet(Credential credentials, Integer id) {
+    public void likeTweet(Credential credentials, Integer id) {
         User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(credentials.getUsername());
         if (activeUser == null){
             throw new NotFoundException("Account is not active or does not exist!");
@@ -193,7 +193,6 @@ public class TweetServiceImpl implements TweetService {
         tweet.getLikes().add(activeUser);
         tweetRepository.saveAndFlush(tweet);
         
-        return tweetMapper.entityToDto(tweet);
     }
 
     @Override
