@@ -145,6 +145,23 @@ public class TweetServiceImpl implements TweetService {
         replyTweet.setInReplyTo(tweetToBeRepliedTo);
         tweetRepository.saveAndFlush(replyTweet);
 
+        List<String> hashtagsToSave = extractHashtags(replyTweet.getContent());
+        for (String hashtag: hashtagsToSave){
+            Hashtag hashtagToSave = new Hashtag();
+            Hashtag hashTagExists = hashtagRepository.findByLabel(hashtag);
+            if(hashTagExists == null){
+                hashtagToSave.setLabel(hashtag);
+                hashtagToSave.setFirstUsed(new Timestamp(System.currentTimeMillis()));
+                hashtagToSave.setLastUsed(new Timestamp(System.currentTimeMillis()));
+                hashtagToSave.getTweets().add(replyTweet);
+                hashtagRepository.saveAndFlush(hashtagToSave);
+            } else{
+                hashTagExists.setLastUsed(new Timestamp(System.currentTimeMillis()));
+                hashTagExists.getTweets().add(replyTweet);
+                hashtagRepository.saveAndFlush(hashTagExists);
+            }
+        }
+
         List<Tweet> replies = tweetToBeRepliedTo.getReplies();
         replies.add(tweetMapper.dtoToEntity(tweet));
         tweetToBeRepliedTo.setReplies(replies);
