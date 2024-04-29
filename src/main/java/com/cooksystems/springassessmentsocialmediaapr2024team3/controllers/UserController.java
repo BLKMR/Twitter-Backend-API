@@ -1,6 +1,7 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
 
+
 import java.util.List;
 
 
@@ -12,6 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.CredentialsDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileUpdateRequestDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Profile;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
+import org.springframework.web.bind.annotation.*;
+
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
@@ -35,6 +46,7 @@ public class UserController {
     }
 
 
+
     @GetMapping("/username/@{username}")
     public UserResponseDto getActiveUserByUsername(@PathVariable String username) {
         return userService.getActiveUserByUsername(username);
@@ -50,4 +62,23 @@ public class UserController {
     
 
     
+
+
+
+
+    @GetMapping("/@{username}/followers")
+    public List<UserResponseDto> getUserFollowers(@PathVariable String username) {
+        return userService.getUserFollowers(username);
+    }
+
+
+    @PatchMapping("/@{username}")
+    public UserResponseDto updateProfile(@PathVariable String username, @RequestBody ProfileUpdateRequestDto updateRequest){
+        return userService.updateProfile(username, updateRequest);
+
+    }
+
+
+
+
 }

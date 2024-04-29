@@ -54,7 +54,9 @@ public class Tweet {
   private List<User> mentions = new ArrayList<>();
 	
   @ManyToMany
+
   private List<HashTag> hashtags = new ArrayList<>();
+
 
   @ManyToMany
   private List<User> likes = new ArrayList<>();

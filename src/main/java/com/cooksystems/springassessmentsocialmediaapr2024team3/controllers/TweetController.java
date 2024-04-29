@@ -1,5 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ContextDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.HashTagDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.HashtagDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/tweets")
 @RequiredArgsConstructor
 public class TweetController {
+
 
 	
 	
@@ -42,7 +44,7 @@ public class TweetController {
     }
     
     @GetMapping("{id}/tags")
-    public List<HashTagDto> getTweetTags(@PathVariable ("id") Long id) {
+    public List<HashtagDto> getTweetTags(@PathVariable ("id") Long id) {
         return tweetService.getTweetTags(id);
     }
     
@@ -58,4 +60,5 @@ public class TweetController {
 
   
     
+
 }

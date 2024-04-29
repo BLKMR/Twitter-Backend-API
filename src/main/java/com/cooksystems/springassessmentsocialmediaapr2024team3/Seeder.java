@@ -1,28 +1,34 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.*;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashTagRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.HashTag;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Profile;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashTagRepository;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class Seeder implements CommandLineRunner {
 
-    private final HashTagRepository hashTagRepository;
+    private final HashTagRepository hashtagRepository;
     private final TweetRepository tweetRepository;
     private final UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
     	
-    	/*
+
 
         // --- User 1 ---
         // Credentials
@@ -274,8 +280,7 @@ public class Seeder implements CommandLineRunner {
         List<User> followers_1 = List.of(user5, deletedUser);
         user1.setFollowers(followers_1);
         userRepository.saveAndFlush(user1);
-        */
-        
+
     }
 
 }

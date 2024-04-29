@@ -15,7 +15,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetRespons
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.HashTag;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.HashTagMapper;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.HashtagMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.TweetMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashTagRepository;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+
 public class HashTagServiceImpl implements HashTagService {
 	
 	
@@ -36,7 +37,7 @@ public class HashTagServiceImpl implements HashTagService {
 	HashTagRepository hashtagRepository;
 
 	@Autowired
-	HashTagMapper hashtagMapper;
+	HashtagMapper hashtagMapper;
 
 	@Autowired
 	TweetRepository tweetRepository;
@@ -53,7 +54,7 @@ public class HashTagServiceImpl implements HashTagService {
 	}
 
 	@Override
-	public List<HashTagDto> getAllTags() {
+	public List<HashtagDto> getAllTags() {
 		List<HashTag> tags = hashtagRepository.findAll();
 
 		return hashtagMapper.entitiesToDtos(tags);

@@ -2,13 +2,12 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.dtos;
 
 import java.sql.Timestamp;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class TweetResponseDto {
+public class SimpleTweetResponseDto {
 
     private Long id;
 
@@ -17,9 +16,5 @@ public class TweetResponseDto {
     private Timestamp posted;
 
     private String content;
-
-    private TweetResponseDto inReplyTo;
-
-    private TweetResponseDto repostOf;
 
 }

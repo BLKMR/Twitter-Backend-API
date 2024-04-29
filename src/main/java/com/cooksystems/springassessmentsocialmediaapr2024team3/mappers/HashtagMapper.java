@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.HashTagDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.HashTag;
 
-@Mapper(componentModel = "spring")
-public interface HashTagMapper {
+@Mapper(componentModel = "spring", uses = TweetMapper.class)
+public interface HashtagMapper {
 
 
 

@@ -2,23 +2,26 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.mappers;
 
 
 
+
 import java.util.List;
 
-
-
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapping;
 
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.SimpleTweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 
-@Component
-@Mapper(componentModel = "spring", uses = { UserMapper.class })
+@Mapper(componentModel = "spring", uses = { UserMapper.class, CredentialsMapper.class, ProfileMapper.class})
 public interface TweetMapper {
 
-	List<TweetResponseDto> entitiesToDtos(List<Tweet> activeUsers);
+    @Mapping(target = "author", source = "author.credentials.username")
+    TweetResponseDto entityToDto(Tweet entity);
 
-	TweetResponseDto entityToDto(Tweet tweet);
 
+    List<TweetResponseDto> entitiesToDtos(List<Tweet> entities);
+
+    @Mapping(target = "author", source = "author.credentials.username")
+    SimpleTweetResponseDto simpleEntityToDto(Tweet tweetCreated);
 
 }
