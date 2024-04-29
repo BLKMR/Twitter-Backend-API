@@ -1,13 +1,15 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.dtos;
 
-import java.sql.Timestamp;
-
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 @NoArgsConstructor
 @Data
-public class TweetResponseDto {
+
+public class TweetRepostDto {
 
     private Long id;
 
@@ -15,10 +17,11 @@ public class TweetResponseDto {
 
     private Timestamp posted;
 
+    @JsonIgnore
     private String content;
 
+    @JsonIgnore
     private TweetResponseDto inReplyTo;
 
-    private TweetResponseDto repostOf;
-
+    private SimpleTweetResponseDto repostOf;
 }

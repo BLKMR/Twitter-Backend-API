@@ -18,21 +18,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Data
-public class HashTag {
-	
+public class Hashtag {
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	 
+
 	@Column(nullable = false, unique = true)
 	private String label;
-	
+
 	@CreatedDate
 	private Timestamp firstUsed;
-	
+
 	@LastModifiedDate
 	private Timestamp lastUsed;
-	
-	@ManyToMany(mappedBy = "hashTags")
-  private List<Tweet> tweets = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "hashtags")
+	private List<Tweet> tweets = new ArrayList<>();
 }

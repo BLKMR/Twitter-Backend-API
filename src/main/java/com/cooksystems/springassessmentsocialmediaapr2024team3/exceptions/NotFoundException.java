@@ -11,10 +11,8 @@ import lombok.Setter;
 @Setter
 public class NotFoundException extends RuntimeException {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 6870131658491867519L;
-		private String message;
+	private String message;
+
 
 }
