@@ -43,13 +43,17 @@ public class UserController {
         return userService.getUserMentionedTweets(username);
     }
 
+    @GetMapping("/@{username}/feed")
+    public List<TweetResponseDto> getUserFeed(@PathVariable String username){
+        return userService.getUserFeed(username);
+    }
+
 
     @PatchMapping("/@{username}")
     public UserResponseDto updateProfile(@PathVariable String username, @RequestBody ProfileUpdateRequestDto updateRequest){
         return userService.updateProfile(username, updateRequest);
 
     }
-
 
     @PostMapping("/@{username}/follow")
     public ResponseEntity<ErrorDto> subscribeUser(@PathVariable String username, @RequestBody CredentialsDto credentials){

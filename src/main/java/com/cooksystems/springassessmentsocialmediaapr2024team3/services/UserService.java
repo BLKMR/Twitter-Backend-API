@@ -23,4 +23,6 @@ public interface UserService {
     void subscribeUser(String username, CredentialsDto credentials);
 
     List<TweetResponseDto> getUserMentionedTweets(String username);
+
+    List<TweetResponseDto> getUserFeed(String username);
 }

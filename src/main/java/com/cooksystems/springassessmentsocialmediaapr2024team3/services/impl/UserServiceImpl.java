@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -83,8 +81,33 @@ public class UserServiceImpl implements UserService{
         }
         List<Tweet> mentionedTweets = checkUser.getTweetsMentioned();
         mentionedTweets.removeIf(Tweet::isDeleted);
+        mentionedTweets.sort(Comparator.comparing(Tweet::getPosted, Comparator.reverseOrder()));
 
         return tweetMapper.entitiesToDtos(mentionedTweets);
+    }
+
+    @Override
+    public List<TweetResponseDto> getUserFeed(String username) {
+        User checkUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if(checkUser == null) {
+            throw new NotFoundException("Account is not active or does not exist!");
+        }
+
+        List<Tweet> userTweets = tweetRepository.findAllByAuthorAndDeletedFalseOrderByPostedDesc(checkUser);
+        List<Tweet> feed = new ArrayList<>(userTweets);
+
+        List<User> usersFollowed = checkUser.getFollowing();
+
+        for (User following : usersFollowed) {
+            List<Tweet> followingTweets = tweetRepository.findAllByAuthorAndDeletedFalse(following);
+            feed.addAll(followingTweets);
+        }
+
+
+        feed.sort(Comparator.comparing(Tweet::getPosted, Comparator.reverseOrder()));
+
+
+        return tweetMapper.entitiesToDtos(feed);
     }
 
 
