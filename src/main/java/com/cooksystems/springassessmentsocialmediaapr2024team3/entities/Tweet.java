@@ -1,6 +1,7 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.entities;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +13,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Data
+@Table(name = "tweet")
 public class Tweet {
 	
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -48,11 +52,19 @@ public class Tweet {
 	
 	@ManyToMany
   private List<User> mentions = new ArrayList<>();
-
+	
   @ManyToMany
-  private List<HashTag> hashTags = new ArrayList<>();
+  private List<HashTag> hashtags = new ArrayList<>();
 
   @ManyToMany
   private List<User> likes = new ArrayList<>();
+
+
+
+
+
+
+  
+
 	
 }

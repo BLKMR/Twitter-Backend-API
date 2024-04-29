@@ -1,9 +1,12 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.entities;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -27,12 +30,12 @@ public class HashTag {
 	@Column(nullable = false, unique = true)
 	private String label;
 	
-	@CreatedDate
+	@CreationTimestamp
 	private Timestamp firstUsed;
 	
-	@LastModifiedDate
+	@UpdateTimestamp
 	private Timestamp lastUsed;
 	
-	@ManyToMany(mappedBy = "hashTags")
+	@ManyToMany(mappedBy = "hashtags")
   private List<Tweet> tweets = new ArrayList<>();
 }
