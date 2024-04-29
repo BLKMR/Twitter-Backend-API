@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService{
 
     }
 
-
     @Override
     public UserResponseDto getActiveUserByUsername(String username) {
         User activeUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);

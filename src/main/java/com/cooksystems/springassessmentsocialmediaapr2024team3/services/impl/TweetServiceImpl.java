@@ -95,6 +95,16 @@ public class TweetServiceImpl implements TweetService {
         }
         return hashtags;
     }
+
+    public List<String> extractMentions(String text) {
+        List<String> mentions = new ArrayList<>();
+        Pattern pattern = Pattern.compile("(?<=@)[a-zA-Z0-9]+\\S*");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            mentions.add(matcher.group());
+        }
+        return mentions;
+    }
     
     @Override
     public TweetResponseDto getTweetById(Integer id) {
@@ -144,6 +154,13 @@ public class TweetServiceImpl implements TweetService {
         replyTweet.setPosted(new Timestamp(System.currentTimeMillis()));
         replyTweet.setInReplyTo(tweetToBeRepliedTo);
         tweetRepository.saveAndFlush(replyTweet);
+
+        List<String> mentionsToSave = extractMentions(replyTweet.getContent());
+        for (String mention : mentionsToSave){
+            User mentioned = userRepository.findByCredentialsUsername(mention);
+            replyTweet.getMentions().add(mentioned);
+            mentioned.getTweetsMentioned().add(replyTweet);
+        }
 
         List<String> hashtagsToSave = extractHashtags(replyTweet.getContent());
         for (String hashtag: hashtagsToSave){
