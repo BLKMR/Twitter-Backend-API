@@ -6,6 +6,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.HashtagMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.TweetMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.UserMapper;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashtagRepository;
@@ -33,6 +34,36 @@ public class TweetServiceImpl implements TweetService {
     private final TweetRepository tweetRepository;
     private final TweetMapper tweetMapper;
     private final HashtagRepository hashtagRepository;
+    private final HashtagMapper hashtagMapper;
+
+
+
+    private Tweet getTweet(Long id) {
+        Tweet optional = tweetRepository.findByIdAndDeletedFalse(id);
+        if (optional == null) {
+            throw new NotFoundException("No Tweet Found");
+        }
+        return optional;
+    }
+
+
+    private User getUser(String username) {
+        User optional = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
+        if (optional == null) {
+            throw new NotFoundException("User Not Found");
+        }
+        return optional;
+    }
+
+
+
+    @Override
+    public List<TweetResponseDto> getAllTweets() {
+        List<Tweet> activeUsers = tweetRepository.findAllByDeletedFalseOrderByPostedDesc();
+
+        return tweetMapper.entitiesToDtos(activeUsers);
+    }
+
 
 
 
@@ -132,6 +163,121 @@ public class TweetServiceImpl implements TweetService {
             mentions.add(matcher.group());
         }
         return mentions;
+    }
+
+
+
+
+    @Override
+    public List<TweetResponseDto> getReposts(Long id) {
+        Tweet tweet = getTweet(id);
+        List<Tweet> active = new ArrayList<>();
+
+
+        for(Tweet repost : tweet.getReposts())
+        {
+            getTweet(repost.getId());//repost.setRepostOf(tweet);
+            active.add(repost);
+
+        }
+
+
+
+        return tweetMapper.entitiesToDtos(active);
+
+    }
+
+
+
+    @Override
+    public List<UserResponseDto> getMentions(Long id) {
+        Tweet tweet = getTweet(id);
+
+        List<User> users = new ArrayList<>();
+
+        for(User mention: tweet.getMentions())
+        {
+            getUser(mention.getCredentials().getUsername());
+            users.add(mention);
+
+        }
+
+
+
+
+        return userMapper.entitiesToDtos(users) ;
+    }
+
+
+    @Override
+    public List<HashtagDto> getTweetTags(Long id) {
+        Tweet tweet = getTweet(id);
+
+        List<Hashtag> tags = new ArrayList<>();
+        for( Hashtag saved_tags : tweet.getHashtags())
+        {
+            if(saved_tags != null)
+            {
+                tags.add(saved_tags);
+            }
+
+
+        }
+
+        return hashtagMapper.entitiesToDtos(tags);
+    }
+
+
+    @Override
+    public ContextDto getContext(Long id) {
+        Tweet targetTweet = getTweet(id);
+
+        if (targetTweet.isDeleted()) {
+            // Return an error response if the target tweet doesn't exist or is deleted
+            return null;
+        }
+
+        ContextDto context = new ContextDto();
+
+        List<TweetResponseDto> beforeChain = new ArrayList<>();
+        List<TweetResponseDto> afterChain = new ArrayList<>();
+
+        // Start building the before chain
+        buildBeforeChain(targetTweet.getInReplyTo(), beforeChain);
+
+        // Add the target tweet to the before chain
+        beforeChain.add(tweetMapper.entityToDto(targetTweet));
+
+        // Start building the after chain
+        buildAfterChain(targetTweet.getReplies(), afterChain);
+
+        context.setBefore(beforeChain);
+        context.setAfter(afterChain);
+
+        return context;
+
+    }
+
+    private void buildBeforeChain(Tweet tweet, List<TweetResponseDto> chain) {
+        if (tweet == null || tweet.isDeleted()) {
+            return;
+        }
+
+        buildBeforeChain(tweet.getInReplyTo(), chain);
+        chain.add(tweetMapper.entityToDto(tweet));
+    }
+
+
+    private void buildAfterChain(List<Tweet> replies, List<TweetResponseDto> chain) {
+        for (Tweet reply : replies) {
+            if (!reply.isDeleted()) {
+                chain.add(tweetMapper.entityToDto(reply));
+                buildAfterChain(reply.getReplies(), chain);
+            } else {
+                // Include transitive replies if the reply is deleted
+                buildAfterChain(reply.getReplies(), chain);
+            }
+        }
     }
 
 
