@@ -1,6 +1,7 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.controllers;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,20 @@ public class UserController {
 
     }
 
-    @PostMapping("/@{username}/follow")
+    @GetMapping("/@{username}/following")
+    public List<UserResponseDto> getFollowing(@PathVariable String username){
+        return userService.getFollowing(username);
+    }
+
+    @DeleteMapping("/@{username}")
+    public UserResponseDto deleteUser(@RequestBody Credentials credentials, @PathVariable String username) {
+        return userService.deleteUser(credentials, username);
+    }
+
+    @PostMapping("/@{username}/unfollow")
+    public void unfollowUser(@RequestBody Credentials credentials, @PathVariable String username) {
+        userService.unfollowUser(credentials, username);
+    }    @PostMapping("/@{username}/follow")
     public ResponseEntity<ErrorDto> subscribeUser(@PathVariable String username, @RequestBody CredentialsDto credentials){
         try{
             userService.subscribeUser(username, credentials);

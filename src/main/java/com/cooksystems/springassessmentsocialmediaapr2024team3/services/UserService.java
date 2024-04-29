@@ -4,6 +4,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.CredentialsD
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileUpdateRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 
 import java.util.List;
 
@@ -17,6 +18,11 @@ public interface UserService {
 
     UserResponseDto updateProfile(String username, ProfileUpdateRequestDto updateRequest);
 
+    List<UserResponseDto> getFollowing(String username);
+
+    UserResponseDto deleteUser(Credentials credentials, String username);
+
+    void unfollowUser(Credentials credentials, String username);
 
     List<TweetResponseDto> getUserTweets(String username);
 
