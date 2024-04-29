@@ -1,21 +1,27 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.*;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashtagRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.HashTag;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Profile;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashTagRepository;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class Seeder implements CommandLineRunner {
 
-    private final HashtagRepository hashtagRepository;
+    private final HashTagRepository hashtagRepository;
     private final TweetRepository tweetRepository;
     private final UserRepository userRepository;
 
@@ -142,19 +148,19 @@ public class Seeder implements CommandLineRunner {
 
         // ----- HASHTAGS -----
 
-        Hashtag hashtag1 = new Hashtag();
+        HashTag hashtag1 = new  HashTag ();
         hashtag1.setLabel("#eldenlord");
 
-        Hashtag hashtag2 = new Hashtag();
+        HashTag hashtag2 = new  HashTag ();
         hashtag2.setLabel("#mario");
 
-        Hashtag hashtag3 = new Hashtag();
+        HashTag  hashtag3 = new  HashTag ();
         hashtag3.setLabel("#luigi");
 
-        Hashtag hashtag4 = new Hashtag();
+        HashTag hashtag4 = new  HashTag () ;
         hashtag4.setLabel("#whereiscortana");
 
-        hashtagRepository.saveAllAndFlush(Arrays.asList(hashtag1, hashtag2, hashtag3, hashtag4));
+        hashTagRepository.saveAllAndFlush(Arrays.asList(hashtag1, hashtag2, hashtag3, hashtag4));
 
 //	    // ----- TWEETS -----
         // --- Start Tweet 1 ---
@@ -274,7 +280,6 @@ public class Seeder implements CommandLineRunner {
         List<User> followers_1 = List.of(user5, deletedUser);
         user1.setFollowers(followers_1);
         userRepository.saveAndFlush(user1);
-
 
     }
 
