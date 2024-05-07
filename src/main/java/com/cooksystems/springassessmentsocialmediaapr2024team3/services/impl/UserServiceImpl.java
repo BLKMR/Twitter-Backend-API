@@ -97,6 +97,8 @@ public class UserServiceImpl implements UserService{
 
         List<User> usersFollowed = checkUser.getFollowing();
 
+        System.out.println(usersFollowed);
+
         for (User following : usersFollowed) {
             List<Tweet> followingTweets = tweetRepository.findAllByAuthorAndDeletedFalse(following);
             feed.addAll(followingTweets);
@@ -193,8 +195,8 @@ public class UserServiceImpl implements UserService{
             throw new NotFoundException("Account is not active or does not exist!");
         }
 
-        String checkCredUsername = checkUser.getCredentials().getUsername();
-        String checkCredPassword = checkUser.getCredentials().getPassword();
+        String checkCredUsername = credentials.getUsername();
+        String checkCredPassword = credentials.getPassword();
 
         if(!checkUser.getCredentials().getUsername().equals(checkCredUsername) || !checkUser.getCredentials().getPassword().equals(checkCredPassword)){
             throw new NotAuthorizedException("Username and/or Password incorrect");
@@ -227,8 +229,8 @@ public class UserServiceImpl implements UserService{
             throw new NotFoundException("Your account is not active or does not exist!");
         }
 
-        String checkCredUsername = user.getCredentials().getUsername();
-        String checkCredPassword = user.getCredentials().getPassword();
+        String checkCredUsername = credentials.getUsername();
+        String checkCredPassword = credentials.getPassword();
 
         if(!user.getCredentials().getUsername().equals(checkCredUsername) || !user.getCredentials().getPassword().equals(checkCredPassword)){
             throw new NotAuthorizedException("Username and/or Password incorrect");
@@ -250,6 +252,39 @@ public class UserServiceImpl implements UserService{
         }
 
         throw new NotFoundException("Couldn't find user in your followed users");
+    }
+
+    @Override
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        User new_user = getUser(userRequestDto);
+
+
+
+        for(User user1:	userRepository.findByCredentialsUsernameAndDeletedTrue(userRequestDto.getCredentials().getUsername()))
+        {
+            if(user1 != null)
+            {
+                user1.setDeleted(false);
+                return userMapper.entityToDto(userRepository.saveAndFlush(user1));
+            }
+        }
+
+
+        return userMapper.entityToDto(userRepository.saveAndFlush(new_user));
+
+
+    }
+
+    private User getUser(UserRequestDto optional) {
+        if (userRepository.findByCredentialsUsernameAndDeletedFalse(optional.getCredentials().getUsername()) != null
+                || optional.getCredentials().getUsername() == null || optional.getCredentials().getPassword() == null
+                || optional.getProfile().getFirstName() == null || optional.getProfile().getLastName() == null
+                || optional.getProfile().getEmail() == null || optional.getProfile().getPhone() == null)
+        {
+            throw new NotFoundException("Need all Required fields");
+        }
+
+        return userMapper.requestDtoEntity(optional);
     }
 
 

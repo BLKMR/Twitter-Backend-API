@@ -18,7 +18,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByFollowersContaining(User user);
 
+    List<User> findByCredentialsUsernameAndDeletedTrue(String username);
+
     User findByCredentialsUsername(String username);
 
     User getById(Integer id);
+
+
 }

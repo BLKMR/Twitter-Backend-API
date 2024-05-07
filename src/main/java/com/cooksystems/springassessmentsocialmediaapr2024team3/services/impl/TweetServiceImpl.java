@@ -1,7 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services.impl;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Hashtag;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
@@ -15,28 +14,14 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.Twee
 import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
 import org.springframework.stereotype.Service;
-
-import com.cooksystems.springassessmentsocialmediaapr2024team3.controllers.TweetController;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Tweet;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotAuthorizedException;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.mappers.TweetMapper;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.HashtagRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.TweetRepository;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.repositories.UserRepository;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.TweetService;
-
 import lombok.RequiredArgsConstructor;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,11 +49,11 @@ public class TweetServiceImpl implements TweetService {
 
 
     private User getUser(String username) {
-        User optional = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
-        if (optional == null) {
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByCredentialsUsernameAndDeletedFalse(username));
+        if (optionalUser.isEmpty()) {
             throw new NotFoundException("User Not Found");
         }
-        return optional;
+        return optionalUser.get();
     }
 
 

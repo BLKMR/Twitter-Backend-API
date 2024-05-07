@@ -22,7 +22,7 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
     	
-
+        /*
 
         // --- User 1 ---
         // Credentials
@@ -276,6 +276,10 @@ public class Seeder implements CommandLineRunner {
         userRepository.saveAndFlush(user1);
 
 
+
+         */
     }
+
+
 
 }

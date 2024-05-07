@@ -1,9 +1,6 @@
 package com.cooksystems.springassessmentsocialmediaapr2024team3.services;
 
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.CredentialsDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileUpdateRequestDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.TweetResponseDto;
-import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 
 import java.util.List;
@@ -31,4 +28,6 @@ public interface UserService {
     List<TweetResponseDto> getUserMentionedTweets(String username);
 
     List<TweetResponseDto> getUserFeed(String username);
+
+    UserResponseDto createUser(UserRequestDto userRequestDto);
 }

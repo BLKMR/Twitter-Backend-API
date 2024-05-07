@@ -4,6 +4,7 @@ import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.*;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Credentials;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.exceptions.NotFoundException;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +70,9 @@ public class UserController {
     @PostMapping("/@{username}/unfollow")
     public void unfollowUser(@RequestBody Credentials credentials, @PathVariable String username) {
         userService.unfollowUser(credentials, username);
-    }    @PostMapping("/@{username}/follow")
+    }
+
+    @PostMapping("/@{username}/follow")
     public ResponseEntity<ErrorDto> subscribeUser(@PathVariable String username, @RequestBody CredentialsDto credentials){
         try{
             userService.subscribeUser(username, credentials);
@@ -78,6 +81,12 @@ public class UserController {
         catch(NotFoundException e){
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto) {
+        return userService.createUser(userRequestDto);
     }
 
 

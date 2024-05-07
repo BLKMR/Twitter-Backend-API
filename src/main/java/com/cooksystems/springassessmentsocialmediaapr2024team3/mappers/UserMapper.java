@@ -4,6 +4,7 @@ package com.cooksystems.springassessmentsocialmediaapr2024team3.mappers;
 
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.ProfileDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserDto;
+import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserRequestDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.dtos.UserResponseDto;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.Profile;
 import com.cooksystems.springassessmentsocialmediaapr2024team3.entities.User;
@@ -22,6 +23,9 @@ public interface UserMapper {
     List<UserResponseDto> entitiesToDtos(List<User> entities);
 
     Profile dtoToEntity(ProfileDto profile);
+
+    User requestDtoEntity(UserRequestDto userRequestDto);
+
 
 
 }
