@@ -391,8 +391,7 @@ public class TweetServiceImpl implements TweetService {
         List<Tweet> returnReplies = new ArrayList<>();
 
         for (Tweet reply : replies) {
-            if (!reply.isDeleted()){
-                returnReplies.add(reply);
+            if (!reply.isDeleted()){                returnReplies.add(reply);
             }
         }
 
